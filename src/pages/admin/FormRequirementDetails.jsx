@@ -13,7 +13,7 @@ const FormRequirementDetails = () => {
     // const url = `${serverURL}/api/forms/get-requirements-forms`;
     // console.log("Server URL : ", serverURL);
 
-    const url = `/api/forms/get-requirements-forms`;
+    const url = process.env.REACT_APP_API_URL + "/loan-forms";
     try {
       const response = await axios.get(url);
       setFormDetails(response.data);

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function LoanApplicationForm() {
     const [maritalStatus, setMaritalStatus] = useState("N");
@@ -24,15 +25,13 @@ export default function LoanApplicationForm() {
 
         // Send form data to the server
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/loan-forms`, {
-                method: 'POST',
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/loan-forms`, formObject, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formObject), // Send data as JSON
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 // Reset the form fields
                 e.target.reset();
 
@@ -82,8 +81,8 @@ export default function LoanApplicationForm() {
                         </div>
                     </div>
 
-                    {/* Contact Details */}
                     <div className="space-y-4">
+                        {/* Contact Details */}
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">Mobile Number</label>
@@ -94,14 +93,12 @@ export default function LoanApplicationForm() {
                                 <input id="telephone" name="telephone" type="tel" className="w-full p-2 border border-gray-300 rounded-md" />
                             </div>
                         </div>
+
+                        {/* Address Information */}
                         <div className="mt-2 space-y-2">
                             <label htmlFor="address" className="block text-sm font-medium text-gray-700">Current Address (with Landmark)</label>
                             <input id="address" name="address" className="w-full p-2 border border-gray-300 rounded-md" required />
                         </div>
-                    </div>
-
-                    {/* Address Information */}
-                    <div className="space-y-4">
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label htmlFor="yearsPresent" className="block text-sm font-medium text-gray-700">Years at Present Address</label>
@@ -114,7 +111,7 @@ export default function LoanApplicationForm() {
                         </div>
 
                         {/* Rental Status */}
-                        <div className="mt-2">
+                        <div className="space-y-4">
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <label htmlFor="rentalStatus" className="block text-sm font-medium text-gray-700">
@@ -195,6 +192,7 @@ export default function LoanApplicationForm() {
                                 </select>
                             </div>
                         </div>
+
                         {/* Spouse Information - only shows if married */}
                         {showSpouseInfo && (
                             <div
@@ -239,15 +237,16 @@ export default function LoanApplicationForm() {
                                 <input id="officeName" name="officeName" className="w-full p-2 border border-gray-300 rounded-md" required />
                             </div>
                             <div className="space-y-2">
-                                <label htmlFor="officeAddress" className="block text-sm font-medium text-gray-700">Office Address</label>
-                                <input id="officeAddress" name="officeAddress" className="w-full p-2 border border-gray-300 rounded-md" required />
-                            </div>
-                        </div>
-                        <div className="grid gap-4 md:grid-cols-3 mt-2">
-                            <div className="space-y-2">
                                 <label htmlFor="officePhone" className="block text-sm font-medium text-gray-700">Telephone No./Landline (Office)</label>
                                 <input id="officePhone" name="officePhone" type="tel" className="w-full p-2 border border-gray-300 rounded-md" required />
                             </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="officeAddress" className="block text-sm font-medium text-gray-700">Office Address</label>
+                            <input id="officeAddress" name="officeAddress" className="w-full p-2 border border-gray-300 rounded-md" required />
+                        </div>
+                        <div className="grid gap-4 md:grid-cols-2 mt-2">
                             <div className="space-y-2">
                                 <label htmlFor="yearsEmployed" className="block text-sm font-medium text-gray-700">Years at Present Job</label>
                                 <input id="yearsEmployed" name="yearsEmployed" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
