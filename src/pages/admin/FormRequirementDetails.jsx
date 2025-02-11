@@ -1,150 +1,115 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ImageShow from "../../components/admin/ImageShow";
+import LoanCustomerDetails from "./LoanCustomerDetails"; // Import the new component
+
 const serverURL = process.env.REACT_APP_SERVER_URL;
 
-const FormRequirementDetails = () => {
+export default function FormRequirementDetails() {
   const [formDetails, setFormDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isURL, setIsURL] = useState(null);
-  const [form, setForm] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null); // State to track selected customer
 
+  // Fetch loan application data from the backend
   const fetchFormDetails = async () => {
-    // const url = `${serverURL}/api/forms/get-requirements-forms`;
-    // console.log("Server URL : ", serverURL);
-
     const url = process.env.REACT_APP_API_URL + "/loan-forms";
     try {
       const response = await axios.get(url);
-      setFormDetails(response.data);
-      setLoading(false);
+      setFormDetails(response.data); // Set the fetched data to state
+      setLoading(false); // Stop loading
     } catch (error) {
       console.error("Error fetching form details:", error);
-      setLoading(false);
+      setLoading(false); // Stop loading even if there's an error
     }
   };
 
+  // Fetch data on component mount
   useEffect(() => {
     fetchFormDetails();
   }, []);
 
-  const handleUrl = (url, form) => {
-    setIsURL(url);
-    setForm(form);
+  // Handle "More Details" button click
+  const handleMoreDetails = (customer) => {
+    setSelectedCustomer(customer); // Set the selected customer
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top
   };
 
+  // Show loading message while data is being fetched
   if (loading) {
-    return <p className="text-center text-gray-500">Loading form details...</p>;
+    return <p className="text-center text-gray-500 mt-8">Loading form details...</p>;
   }
 
   return (
-    <div className="p-1 bg-white shadow rounded-lg">
-
-      {/* <h2 className="text-2xl font-bold mb-4">Form Details</h2> */}
-      {/* {formDetails.length > 0 ? ( */}
-      {/* <table className="table-fixed overflow-hidden w-full border-collapse border border-gray-200">
-        <thead>
-          <tr className="bg-gray-100"> */}
-      {/* <th className="border border-gray-300 px-4 py-2">Employee ID</th> */}
-      {/* <th className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-              Employee Type
-            </th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2">Name</th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden lg:table-cell">Mobile</th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden lg:table-cell">Site Name</th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden overflow-hidden lg:table-cell">Type of Work</th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden lg:table-cell">
-              Submission Date
-            </th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 overflow-hidden flex justify-start items-start lg:table-cell">
-              Requirement Date
-            </th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden overflow-hidden lg:table-cell">
-              Requirement Type
-            </th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 overflow-hidden lg:table-cell">
-              Expense Amount
-            </th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden overflow-hidden lg:table-cell ">Expense Type</th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 overflow-hidden lg:table-cell">Payment Mode</th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 overflow-hidden hidden lg:table-cell">
-              Payment Status
-            </th>
-            <th className="border border-gray-300 px-0 md:px-4 lg:px-4 py-2 hidden lg:table-cell">Remarks</th>
-          </tr>
-        </thead>
-        <tbody>
-          {formDetails.map((form, index) => (
-            <tr
-              key={index}
-              className={`hover:bg-gray-50 p-4 rounded-md ${form.paymentStatus === "Pending"
-                ? "text-red-500"
-                : "text-green-500"
-                }`}
-              onClick={() => {
-                handleUrl(form.paymentMethod, form);
-              }}
-            >
-              <td className="border border-gray-300 px-4 py-2  hidden lg:table-cell">
-                {form.empType}
-              </td>
-              <td id='x' className="border border-gray-300 px-4 py-2">
-                {form.empName}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.empMobile}
-              </td> */}
-      {/* <td className="border border-gray-300 px-4 py-2">{"empty"}</td> */}
-      {/* <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.siteName}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.workTypeName}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.date}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {form.dateOfRequirement}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.requirementType}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {form.expensesAmount}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.expensesType}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                <img
-                  className="w-24 h-16 lg:h-20"
-                  src={`${form.paymentMethod}`}
-                  alt={`${form.paymentMethod}`}
-                />
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.paymentStatus}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 hidden lg:table-cell">
-                {form.remarks}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-
-      {/*
-      ) : (
-        <p className="text-gray-500">No form details found.</p>
-      )} */}
-      {/* {isURL && (
-        <div>
-          <ImageShow form={form} url={isURL} setIsURL={setIsURL} />
-        </div>
-      )} */}
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Loan Application Details</h2>
+        {selectedCustomer ? (
+          // Display LoanCustomerDetails component if a customer is selected
+          <LoanCustomerDetails customer={selectedCustomer} onBack={() => setSelectedCustomer(null)} />
+        ) : (
+          // Display the table if no customer is selected
+          <>
+            {formDetails.length > 0 ? (
+              <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                <table className="min-w-full divide-y bg-zinc-200">
+                  <thead className="bg-slate-300">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Customer Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Mobile
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Address
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Total Years Employed
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Loan Amount
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {formDetails.map((form, index) => (
+                      <tr key={index} className={`${(index % 2 === 0) ? 'bg-zinc-200' : ''} hover:bg-gray-300 transition-colors`}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {form.customerName}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {form.mobile}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {form.address}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {form.yearsTotalEmployed}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          ₹{form.loanAmount}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <button
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                            onClick={() => handleMoreDetails(form)}
+                          >
+                            More Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-center text-gray-500">No form details found.</p>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
-};
-
-export default FormRequirementDetails;
+}
