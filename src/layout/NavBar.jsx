@@ -49,9 +49,8 @@ const NavBar = () => {
 
         {/* Navigation Links */}
         <ul
-          className={`pl-4 md:flex space-x-6 font-medium ${
-            isMenuOpen ? "flex" : "hidden"
-          } absolute md:static top-full left-0 w-full md:w-auto bg-gray-50 md:bg-transparent py-4 md:py-0`}
+          className={`pl-4 md:flex space-x-6 font-medium ${isMenuOpen ? "flex" : "hidden"
+            } absolute md:static top-full left-0 w-full md:w-auto bg-gray-50 md:bg-transparent py-4 md:py-0`}
         >
           <li>
             <Link
@@ -75,9 +74,9 @@ const NavBar = () => {
                 <li className="px-4 py-2 hover:bg-gray-100">
                   <Link
                     className="text-nowrap"
-                    to="/worker"
+                    to="/loan-application-form"
                   >
-                    Requirements
+                    Loan
                   </Link>
                 </li>
               </ul>
