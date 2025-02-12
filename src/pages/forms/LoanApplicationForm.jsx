@@ -21,7 +21,7 @@ export default function LoanApplicationForm() {
             formObject[key] = value;
         });
 
-        console.log(formObject);
+        // console.log(formObject);
 
         // Send form data to the server
         try {
@@ -234,17 +234,17 @@ export default function LoanApplicationForm() {
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label htmlFor="officeName" className="block text-sm font-medium text-gray-700">Office Name</label>
-                                <input id="officeName" name="officeName" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                <input id="officeName" name="officeName" className="w-full p-2 border border-gray-300 rounded-md" />
                             </div>
                             <div className="space-y-2">
                                 <label htmlFor="officePhone" className="block text-sm font-medium text-gray-700">Telephone No./Landline (Office)</label>
-                                <input id="officePhone" name="officePhone" type="tel" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                <input id="officePhone" name="officePhone" type="tel" className="w-full p-2 border border-gray-300 rounded-md" />
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <label htmlFor="officeAddress" className="block text-sm font-medium text-gray-700">Office Address</label>
-                            <input id="officeAddress" name="officeAddress" className="w-full p-2 border border-gray-300 rounded-md" required />
+                            <input id="officeAddress" name="officeAddress" className="w-full p-2 border border-gray-300 rounded-md" />
                         </div>
                         <div className="grid gap-4 md:grid-cols-2 mt-2">
                             <div className="space-y-2">
